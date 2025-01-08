@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\mail-manager\MailManager.Api.csproj" />
+    <ProjectReference Include="..\..\src\MailManager.Api\MailManager.Api.csproj" />
   </ItemGroup>
 
   <ItemGroup>
