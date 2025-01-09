@@ -2,6 +2,7 @@ using Asp.Versioning;
 using mail_manager.Configuration;
 using mail_manager.Extensions;
 using MailManager.Application.Dtos;
+using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,12 +19,12 @@ builder.Services.AddServices(builder.Configuration);
 
 builder.Services.AddEndpoints(typeof(Program).Assembly);
 builder.Services.AddOptions();
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
-
 var versionedGroup = app.VersionedGroup();
-
+app.UseHealthChecks("/health");
 app.MapEndpoints(versionedGroup);
-
 app.UseSwagger();
 app.UseSwaggerUI();
 
