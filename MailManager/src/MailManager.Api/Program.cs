@@ -24,15 +24,21 @@ var versionedGroup = app.VersionedGroup();
 
 app.MapEndpoints(versionedGroup);
 
-// Configure the HTTP request pipeline.
+app.UseSwagger();
+app.UseSwaggerUI();
+
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    builder.Configuration
+    .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true)
+    .AddEnvironmentVariables();
+}
+else {
+     builder.Configuration
+    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
 
-    //builder.Configuration
-    //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-    //.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
 }
 
 app.UseHttpsRedirection();
