@@ -1,9 +1,8 @@
 [build]
 builder = "dockerfile"
-dockerfilePath = "Dockerfile"
+dockerfilePath = "."
 
 [deploy]
-working_directory = "./MailManager.Api"
 startCommand = "dotnet MailManager.Api.dll"
 restartPolicyType = "always"
 healthcheckPath = "/health"
