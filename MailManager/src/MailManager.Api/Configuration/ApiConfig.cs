@@ -1,9 +1,11 @@
 ﻿using Asp.Versioning;
+using MailManager.Application.Abstraction;
 using MailManager.Application.Abstraction.Config;
 using MailManager.Application.Services.MailChimp;
 using MailManager.Application.Services.MockContacts;
-using Microsoft.AspNetCore.DataProtection.KeyManagement;
-using Newtonsoft.Json;
+using MailManager.Application.UseCases.Base;
+using MailManager.Application.UseCases.SyncContacts;
+using Microsoft.Extensions.Options;
 using Refit;
 namespace mail_manager.Configuration
 {
@@ -24,28 +26,31 @@ namespace mail_manager.Configuration
         }
 
         public static void AddRefitConfiguration(this IServiceCollection services, IConfiguration configuration) {
-            
+
+            services.Configure<AppSettings>(configuration.GetSection(StringConst.SectionDefinition));
+
             services.AddTransient<MailChimpDelegateHandler>();
 
-            //var sourcesConfig = configuration.GetSection("Sources").Value;
-            //var sources = JsonConvert.DeserializeObject<IEnumerable<SourcesItem>>(sourcesConfig); 
-
-
             services.AddRefitClient<IMockContactsApi>()
-            .ConfigureHttpClient(x =>
+            .ConfigureHttpClient((serviceProvider, httpClient) => 
             {
-                 //x.BaseAddress = new Uri(sources.First(c=>c.Name== "Mock-API").Url);
-                 x.BaseAddress = new Uri("https://challenge.trio.dev/api/v1");
+                var apiSettings = serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value;
+                httpClient.BaseAddress = new Uri(apiSettings.Sources.First(c=>c.Name== StringConst.ContactDefinition).Url);
             });
 
-
-
             services.AddRefitClient<IMailChimpApi>()
-            .ConfigureHttpClient(x =>
+            .ConfigureHttpClient((serviceProvider, httpClient) =>
             {
-                //x.BaseAddress = new Uri(sources.First(c=>c.Name== "Mailchimp-API").Url);
-                x.BaseAddress = new Uri("https://us16.api.mailchimp.com/3.0");
+                var apiSettings = serviceProvider.GetRequiredService<IOptions<AppSettings>>().Value;
+                httpClient.BaseAddress = new Uri(apiSettings.Sources.First(c=>c.Name== StringConst.MailChimpDefinition).Url);
+
             }).AddHttpMessageHandler<MailChimpDelegateHandler>();
+        }
+
+        public static void AddServices(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddScoped<SyncContactsHandler>();
+            services.AddScoped(typeof(IUseCaseHandler<,>), typeof(UseCaseHandler<,>));
         }
     }
 }

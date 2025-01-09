@@ -14,9 +14,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddApiConfiguration(builder.Configuration);
 builder.Services.AddRefitConfiguration(builder.Configuration);
+builder.Services.AddServices(builder.Configuration);
 
 builder.Services.AddEndpoints(typeof(Program).Assembly);
-
+builder.Services.AddOptions();
 var app = builder.Build();
 
 var versionedGroup = app.VersionedGroup();
@@ -28,6 +29,10 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+
+    //builder.Configuration
+    //.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+    //.AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: false, reloadOnChange: true);
 }
 
 app.UseHttpsRedirection();

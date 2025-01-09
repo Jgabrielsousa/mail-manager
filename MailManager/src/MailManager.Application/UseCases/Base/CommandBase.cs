@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MailManager.Application.Abstraction.Config;
+namespace MailManager.Application.UseCases.Base;
 
-public  record SourcesItem(string Name , string Url);
-
+public class CommandBase<TCommand, Thandler>
+{
+}
