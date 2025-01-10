@@ -7,6 +7,7 @@ using MailManager.Application.Services.MailChimp.Requests;
 using MailManager.Application.Services.MockContacts;
 using MailManager.Application.Services.MockContacts.Responses;
 using MailManager.Application.UseCases.SyncContacts;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Moq;
 
@@ -17,6 +18,7 @@ namespace MailManager.Unit.Test.UseCases
         private Mock<IMailChimpApi> _mailChimpApi;
         private Mock<IMockContactsApi> _mockContactsApi;
         private Mock<IOptions<AppSettings>> _mockAppSettings;
+        private Mock<ILogger<SyncContactsHandler>> _logger;
 
         public SyncContactsHandlerTest()
         {
@@ -28,6 +30,8 @@ namespace MailManager.Unit.Test.UseCases
                 new Sources() { ApiKey = "abc", Name = StringConst.MailChimpDefinition, Url = "" } 
             } 
             });
+
+            _logger = new Mock<ILogger<SyncContactsHandler>>();
         }
 
         [Fact]
@@ -102,6 +106,6 @@ namespace MailManager.Unit.Test.UseCases
         }
 
         public SyncContactsHandler GetHandler()
-            => new SyncContactsHandler(_mailChimpApi.Object, _mockContactsApi.Object, _mockAppSettings.Object);
+            => new SyncContactsHandler(_mailChimpApi.Object, _mockContactsApi.Object, _mockAppSettings.Object, _logger.Object);
     }
 }

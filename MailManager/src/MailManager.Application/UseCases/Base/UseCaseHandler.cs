@@ -31,8 +31,8 @@ where Thandler : HandlerBase<TCommand, Thandler>
         }
         catch (Exception e)
         {
-            return new Result(null!, [e.Message]);
             _logger.LogError(e, "{Command} | {Handler} | Exception ", _commandName, _handlerName);
+            return new Result(null!, [e.Message]);
         }
         finally
         {

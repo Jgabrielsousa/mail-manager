@@ -4,6 +4,7 @@ using MailManager.Application.Dtos;
 using MailManager.Application.Services.MailChimp;
 using MailManager.Application.Services.MockContacts;
 using MailManager.Application.UseCases.Base;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 namespace MailManager.Application.UseCases.SyncContacts;
@@ -13,16 +14,21 @@ public class SyncContactsHandler : HandlerBase<SyncContactsCommand, SyncContacts
     private readonly IMailChimpApi _mailChimpApi;
     private readonly IMockContactsApi _mockContactsApi;
     private readonly AppSettings _appSettings;
-    public SyncContactsHandler(IMailChimpApi mailChimpApi, IMockContactsApi mockContactsApi, IOptions<AppSettings> appSettings)
+    private readonly ILogger<SyncContactsHandler> _logger;
+    public SyncContactsHandler(IMailChimpApi mailChimpApi, IMockContactsApi mockContactsApi, IOptions<AppSettings> appSettings,ILogger<SyncContactsHandler> logger)
     {
         _mailChimpApi = mailChimpApi;
         _mockContactsApi = mockContactsApi;
         _appSettings = appSettings.Value;
+        _logger= logger;
     }
     public override async Task<Result> Execute(SyncContactsCommand? command, CancellationToken cancellationToken = default)
     {
         var usersMock = await _mockContactsApi.Get();
         var usersSynced = new List<Contact>();
+
+        _logger.LogInformation("usersMock | {Count}", usersMock.Count());
+        
 
         foreach (var user in usersMock.Take(1)) {
             try
@@ -30,8 +36,9 @@ public class SyncContactsHandler : HandlerBase<SyncContactsCommand, SyncContacts
                 await _mailChimpApi.Post(GetListId(), user);
                 usersSynced.Add(user);
             }
-            catch (Exception erro)
+            catch (Exception e)
             {
+                _logger.LogError(e, "{Handler} | Exception {Message}", nameof(SyncContactsHandler), e.Message);
             }
         }
 
