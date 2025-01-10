@@ -31,7 +31,7 @@ public class SyncContactsHandler : HandlerBase<SyncContactsCommand, SyncContacts
         _logger.LogInformation("usersMock | {Count}", usersMock.Count());
         
 
-        foreach (var user in usersMock.Take(1)) {
+        foreach (var user in usersMock) {
             try
             {
                 await _mailChimpApi.Post(GetListId(),user);
