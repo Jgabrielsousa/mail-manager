@@ -6,6 +6,8 @@ Mail Manager is a C# application designed to make simple and efficient sync cont
 
 - **Sync Contacts**:Synchronize your contacts
 
+## Integration 
+![Alt text](https://github.com/Jgabrielsousa/mail-manager/blob/main/MailManager/others/how-it-works.png?raw=true)
 
 ## Project Structure
 ```plaintext
@@ -31,3 +33,9 @@ Mail Manager is a C# application designed to make simple and efficient sync cont
   "id": "132"
 }]
 ```
+
+## Api Demo
+[click here](https://mail-manager-production.up.railway.app/swagger/index.html)
+
+## Presentation
+[click here](https://mail-manager-production.up.railway.app/swagger/index.html)
