@@ -2,6 +2,7 @@
 using MailManager.Application.Abstraction.Config;
 using MailManager.Application.Dtos;
 using MailManager.Application.Services.MailChimp;
+using MailManager.Application.Services.MailChimp.Requests;
 using MailManager.Application.Services.MockContacts;
 using MailManager.Application.UseCases.Base;
 using Microsoft.Extensions.Logging;
@@ -33,7 +34,7 @@ public class SyncContactsHandler : HandlerBase<SyncContactsCommand, SyncContacts
         foreach (var user in usersMock.Take(1)) {
             try
             {
-                await _mailChimpApi.Post(GetListId(), user);
+                await _mailChimpApi.Post(GetListId(),user);
                 usersSynced.Add(user);
             }
             catch (Exception e)
@@ -47,5 +48,5 @@ public class SyncContactsHandler : HandlerBase<SyncContactsCommand, SyncContacts
         return new Result(result,[]);
     }
     private string GetListId()
-       => _appSettings.Sources.First(c => c.Name == StringConst.MailChimpDefinition).ApiKey;
+       => _appSettings.Sources.First(c => c.Name == StringConst.MailChimpDefinition).ApiId;
 }
