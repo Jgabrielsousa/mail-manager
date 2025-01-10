@@ -38,4 +38,4 @@ Mail Manager is a C# application designed to make simple and efficient sync cont
 [click here](https://mail-manager-production.up.railway.app/swagger/index.html)
 
 ## Presentation
-[click here](https://mail-manager-production.up.railway.app/swagger/index.html)
+[click here](https://github.com/Jgabrielsousa/mail-manager/blob/main/MailManager/others/VID_20250110_123915.mp4)
