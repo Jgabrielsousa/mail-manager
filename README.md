@@ -7,6 +7,18 @@ Mail Manager is a C# application designed to make simple and efficient sync cont
 - **Sync Contacts**:Synchronize your contacts
 
 
+## Project Structure
+```plaintext
+.
+├── src
+│   ├── MailManager.Api
+|   ├── MailManager.Application
+├── tests
+│   ├── MailManager.Integration.Test
+│   └── MailManager.Unit.Test
+```
+
+
 ## Source - Below is an example of a contact:
 
 ```json
