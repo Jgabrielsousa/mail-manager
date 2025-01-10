@@ -9,16 +9,16 @@ EXPOSE 8081
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["src/MailManager.Api/MailManager.Api.csproj", "src/MailManager.Api/"]
-COPY ["src/MailManager.Application/MailManager.Application.csproj", "src/MailManager.Application/"]
+COPY ["MailManager.Api/MailManager.Api.csproj", "src/MailManager.Api/"]
+COPY ["MailManager.Application/MailManager.Application.csproj", "src/MailManager.Application/"]
 RUN dotnet restore "./src/MailManager.Api/MailManager.Api.csproj"
 COPY . .
-WORKDIR "/src/src/MailManager.Api"
-RUN dotnet build "./MailManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
+WORKDIR "/src/."
+RUN dotnet build "./MailManager.Api/MailManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./MailManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "./MailManager.Api/MailManager.Api.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 FROM base AS final
 WORKDIR /app

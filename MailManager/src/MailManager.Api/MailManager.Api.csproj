@@ -7,7 +7,7 @@
     <RootNamespace>MailManager.Api</RootNamespace>
     <UserSecretsId>ea173635-5b5e-4520-87f8-60b13de8bcaf</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <DockerfileContext>..\..</DockerfileContext>
+    <DockerfileContext>..</DockerfileContext>
   </PropertyGroup>
 
   <ItemGroup>
