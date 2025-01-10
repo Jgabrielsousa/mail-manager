@@ -1,6 +1,6 @@
 [build]
 builder = "dockerfile"
-dockerfilePath = "src/Dockerfile"
+dockerfilePath = "src/test/Dockerfile"
 
 [deploy]
 startCommand = "dotnet MailManager.Api.dll"
